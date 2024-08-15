@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_1/repositories/models/CoinModel.dart';
+import 'package:flutter_1/features/crypto_coin/bloc/crypto_coin_bloc.dart';
+import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 
 class CryptoCoinScreen extends StatefulWidget {
   const CryptoCoinScreen({super.key});
@@ -9,22 +12,72 @@ class CryptoCoinScreen extends StatefulWidget {
 }
 
 class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
-  CoinModel? coin;
+  CryptoCoinBloc? cryptoCoinBloc;
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
-    assert(args!=null && args is CoinModel, 'You must provide CoinModel args');
-    coin = args as CoinModel;
-    setState(() {});
+    assert(args != null && args is String, 'You must provide coinName args');
+    String coinName = args as String;
+    cryptoCoinBloc = CryptoCoinBloc(
+        coinRepository: GetIt.instance<AbstractCryptoRepository>(),
+        coinName: coinName);
+    cryptoCoinBloc!.add(LoadCoinDetail());
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(coin!.name ?? '...')),
-      body: Center(child: Text(coin!.price.toStringAsFixed(4)+"\$" ?? '...')),
-    );
+        appBar: AppBar(
+            title: Text(cryptoCoinBloc?.coinName ?? '...'),
+          actions: [
+            IconButton(onPressed: (){
+              cryptoCoinBloc!.add(LoadCoinDetail());
+            }, icon: const Icon(Icons.refresh))
+          ],
+        ),
+        body: BlocBuilder<CryptoCoinBloc, CryptoCoinState>(
+          bloc: cryptoCoinBloc,
+          builder: (context, state) {
+            if (state is CryptoCoinLoaded) {
+              final coin = state.coinDetail;
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      coin.imageUrl,
+                      height: 200,
+                      width: 200,
+                    ),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(25),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Стоимость: ${coin.price.toStringAsFixed(3)}\$'),
+                            const SizedBox(height: 10),
+                            Text('MIN за 24ч: ${coin.low24Hour.toStringAsFixed(3)}\$'),
+                            const SizedBox(height: 10),
+                            Text('MAX за 24ч: ${coin.high24Hour.toStringAsFixed(3)}\$'),
+                          ]
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            }
+            return const Center(child: RefreshProgressIndicator());
+          },
+        ));
   }
 }

@@ -1,16 +1,12 @@
-# flutter_1
+# CryptoApp
 
-A new Flutter project.
+Dart 3.5.0
+Flutter 3.24.0
 
-## Getting Started
+## Дополнительно
+dio - работа с API
+get_it - внедрение зависимостей DI (dependency injection)
+flutter_bloc - управление состояниями в приложении, например, init, loading, loaded, failure
+equatable - сравнение данных (пришли одинаковые данные, не происходит обновление страницы)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

@@ -1,13 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_1/features/crypto_list/bloc/crypto_list_block.dart';
-import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
-import 'package:flutter_1/repositories/models/CoinModel.dart';
-import 'package:flutter_1/theme/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import '../widgets/crypto_coin_tile.dart';
+import 'package:flutter_1/features/crypto_list/bloc/crypto_list_block.dart';
+import 'package:flutter_1/features/crypto_list/widgets/widgets.dart';
+import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
+import 'package:flutter_1/theme/theme.dart';
 
 class CryptoListScreen extends StatefulWidget {
   const CryptoListScreen({super.key, required this.title});
@@ -18,7 +17,7 @@ class CryptoListScreen extends StatefulWidget {
   State<CryptoListScreen> createState() => _CryptoListScreenState();
 }
 
-class _CryptoListScreenState extends State<CryptoListScreen> {
+class _CryptoListScreenState extends State<CryptoListScreen> with RouteAware {
   final cryptoListBloc = CryptoListBloc(
       cryptoRepository: GetIt.instance<AbstractCryptoRepository>());
 
@@ -26,6 +25,12 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
   void initState() {
     super.initState();
     cryptoListBloc.add(LoadCryptoList());
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {});
+    super.didPopNext();
   }
 
   @override
@@ -49,7 +54,7 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                   itemCount: state.coinList.length,
                   itemBuilder: (context, i) {
                     final coin = state.coinList[i];
-                    return CryptoCoinTile(coin: coin);
+                    return CryptoCoinTile(coin: coin, cryptoListBloc: cryptoListBloc);
                   },
                   separatorBuilder: (context, i) => const Divider(),
                 );
@@ -64,8 +69,9 @@ class _CryptoListScreenState extends State<CryptoListScreen> {
                         Text('попробуйте перезапустить приложение',
                             style: darkTheme.textTheme.bodySmall),
                         TextButton(
-                            onPressed: () =>
-                                cryptoListBloc.add(LoadCryptoList()),
+                            onPressed: () {
+                              cryptoListBloc.add(LoadCryptoList());
+                            },
                             child: const Text('Перезапуск'))
                       ]),
                 );

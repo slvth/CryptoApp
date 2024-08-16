@@ -4,6 +4,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
 import 'package:flutter_1/repositories/models/CoinModel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 part 'crypto_list_state.dart';
 part 'crypto_list_event.dart';
@@ -21,14 +23,18 @@ class CryptoListBloc extends Bloc<CryptoListEvent, CryptoListState> {
         final coinList = await cryptoRepository.getCoinList();
         emit(CryptoListLoaded(coinList: coinList));
       }
-      catch(e){
+      catch(e, st){
         emit(CryptoListFailure(exception: e));
-        print('exception! exception!');
+        GetIt.I<Talker>().handle(e, st);
       }
       finally{
         event.completer?.complete();
       }
     });
-
+  }
+  @override
+  void onError(Object error, StackTrace stackTrace) {
+    super.onError(error, stackTrace);
+    GetIt.I<Talker>().handle(error, stackTrace);
   }
 }

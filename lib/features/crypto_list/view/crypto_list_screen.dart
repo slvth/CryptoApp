@@ -7,6 +7,7 @@ import 'package:flutter_1/features/crypto_list/bloc/crypto_list_block.dart';
 import 'package:flutter_1/features/crypto_list/widgets/widgets.dart';
 import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
 import 'package:flutter_1/theme/theme.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 
 class CryptoListScreen extends StatefulWidget {
   const CryptoListScreen({super.key, required this.title});
@@ -37,9 +38,21 @@ class _CryptoListScreenState extends State<CryptoListScreen> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-          title: Text(widget.title),
-        ),
+            //backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(widget.title),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => TalkerScreen(
+                          talker: GetIt.I<Talker>(),
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.adb))
+            ]),
         body: RefreshIndicator(
           onRefresh: () async {
             final completer = Completer();
@@ -54,7 +67,8 @@ class _CryptoListScreenState extends State<CryptoListScreen> with RouteAware {
                   itemCount: state.coinList.length,
                   itemBuilder: (context, i) {
                     final coin = state.coinList[i];
-                    return CryptoCoinTile(coin: coin, cryptoListBloc: cryptoListBloc);
+                    return CryptoCoinTile(
+                        coin: coin, cryptoListBloc: cryptoListBloc);
                   },
                   separatorBuilder: (context, i) => const Divider(),
                 );

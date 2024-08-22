@@ -13,11 +13,11 @@ class CryptoCoinLoading extends CryptoCoinState {
 }
 
 class CryptoCoinLoaded extends CryptoCoinState {
-  final CoinDetailModel coinDetail;
-  CryptoCoinLoaded({required this.coinDetail});
+  final CoinModel coin;
+  CryptoCoinLoaded({required this.coin});
 
   @override
-  List<Object?> get props => [coinDetail];
+  List<Object?> get props => [coin];
 }
 
 class CryptoCoinFailure extends CryptoCoinState {

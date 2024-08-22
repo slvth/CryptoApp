@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "872083281681",
+    "project_id": "cryptoapp-58ef0",
+    "storage_bucket": "cryptoapp-58ef0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872083281681:android:8d0307ebcbd813d8d41eb0",
+        "android_client_info": {
+          "package_name": "com.example.flutter_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOfSHak7E-B3R3fMv2TboaqKMjrh8pekg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872083281681:android:c4c103979df90822d41eb0",
+        "android_client_info": {
+          "package_name": "com.slvt.cryproapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOfSHak7E-B3R3fMv2TboaqKMjrh8pekg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

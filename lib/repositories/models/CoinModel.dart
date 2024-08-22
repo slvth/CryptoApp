@@ -1,16 +1,15 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutter_1/repositories/models/CoinDetailModel.dart';
 
 class CoinModel extends Equatable {
   final String name;
-  final double price;
-  final String imageUrl;
+  final CoinDetailModel details;
 
   const CoinModel({
     required this.name,
-    required this.price,
-    required this.imageUrl
+    required this.details
   });
 
   @override
-  List<Object> get props => [name, price, imageUrl];
+  List<Object> get props => [name, details];
 }

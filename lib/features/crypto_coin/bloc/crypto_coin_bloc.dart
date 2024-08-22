@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
-import 'package:flutter_1/repositories/models/CoinDetailModel.dart';
+import 'package:flutter_1/repositories/models/CoinModel.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:talker_flutter/talker_flutter.dart';
@@ -16,7 +16,7 @@ class CryptoCoinBloc extends Bloc<CryptoCoinEvent, CryptoCoinState> {
     on<LoadCoinDetail>((event, emit) async{
       try{
         final coinDetail = await coinRepository.getCoinDetail(coinName);
-        emit(CryptoCoinLoaded(coinDetail: coinDetail));
+        emit(CryptoCoinLoaded(coin: coinDetail));
       } catch (e, st){
         emit(CryptoCoinFailure(exception: e));
         GetIt.I<Talker>().handle(e, st);

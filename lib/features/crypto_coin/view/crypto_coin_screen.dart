@@ -47,13 +47,14 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
           bloc: cryptoCoinBloc,
           builder: (context, state) {
             if (state is CryptoCoinLoaded) {
-              final coin = state.coinDetail;
+              final coin = state.coin;
+              final coinDetail = coin.details;
               return Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.network(
-                      coin.imageUrl,
+                      coinDetail.fullImageUrl,
                       height: 200,
                       width: 200,
                     ),
@@ -63,11 +64,11 @@ class _CryptoCoinScreenState extends State<CryptoCoinScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('Стоимость: ${coin.price.toStringAsFixed(3)}\$'),
+                            Text('Стоимость: ${coinDetail.price.toStringAsFixed(3)}\$'),
                             const SizedBox(height: 10),
-                            Text('MIN за 24ч: ${coin.low24Hour.toStringAsFixed(3)}\$'),
+                            Text('MIN за 24ч: ${coinDetail.low24Hour.toStringAsFixed(3)}\$'),
                             const SizedBox(height: 10),
-                            Text('MAX за 24ч: ${coin.high24Hour.toStringAsFixed(3)}\$'),
+                            Text('MAX за 24ч: ${coinDetail.high24Hour.toStringAsFixed(3)}\$'),
                           ]
                         ),
                       ),

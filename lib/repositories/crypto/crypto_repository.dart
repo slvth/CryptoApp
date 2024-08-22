@@ -15,36 +15,25 @@ class CryptoRepository implements AbstractCryptoRepository {
     final dataRaw = data['RAW'] as Map<String, dynamic>;
     final coinList = dataRaw.entries.map((e) {
       final dataDetail =
-          (e.value as Map<String, dynamic>)['USD'] as Map<String, dynamic>;
+      (e.value as Map<String, dynamic>)['USD'] as Map<String, dynamic>;
       final name = e.key;
-      final price = dataDetail['PRICE'];
-      final imageUrl =
-          'https://www.cryptocompare.com/${dataDetail['IMAGEURL']}';
-      return CoinModel(name: name, price: price, imageUrl: imageUrl);
+      final details = CoinDetailModel.fromJson(dataDetail);
+      return CoinModel(name: name, details: details);
     }).toList();
 
     return coinList;
   }
 
   @override
-  Future<CoinDetailModel> getCoinDetail(String coinName) async {
+  Future<CoinModel> getCoinDetail(String coinName) async {
     final response = await dio.get(
         'https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${coinName}&tsyms=USD');
     final data = response.data as Map<String, dynamic>;
     final dataRaw = data['RAW'] as Map<String, dynamic>;
     final coinData = dataRaw[coinName] as Map<String, dynamic>;
     final coinDataUSD = coinData['USD'] as Map<String, dynamic>;
-    final name = coinName;
-    final price = coinDataUSD['PRICE'];
-    final imageUrl = 'https://www.cryptocompare.com/${coinDataUSD['IMAGEURL']}';
-    final low24Hour = coinDataUSD['LOW24HOUR'];
-    final high24Hour = coinDataUSD['HIGH24HOUR'];
+    final details = CoinDetailModel.fromJson(coinDataUSD);
 
-    return CoinDetailModel(
-        name: name,
-        price: price,
-        imageUrl: imageUrl,
-        low24Hour: low24Hour,
-        high24Hour: high24Hour);
+    return CoinModel(name: coinName, details:details);
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_1/firebase_options.dart';
 import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
 import 'package:flutter_1/repositories/crypto/crypto.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +31,16 @@ void main() {
   Bloc.observer = TalkerBlocObserver(talker: talker);
 
   //Run app
-  runZonedGuarded(() => runApp(const CryptoApp()), (e, st) {
+  runZonedGuarded(() async{
+    //Firebase
+    WidgetsFlutterBinding.ensureInitialized();
+    final app = await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    talker.info(app.options.projectId);
+
+    //Run Flutter App
+    runApp(const CryptoApp());
+  }, (e, st) {
     GetIt.I<Talker>().handle(e, st);
   });
 }

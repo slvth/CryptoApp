@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -9,8 +10,9 @@ import 'package:flutter_1/repositories/abstract_crypto_repository.dart';
 import 'package:flutter_1/theme/theme.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 
+@RoutePage()
 class CryptoListScreen extends StatefulWidget {
-  const CryptoListScreen({super.key, required this.title});
+  const CryptoListScreen({super.key,  this.title = 'Crypto App'});
 
   final String title;
 
